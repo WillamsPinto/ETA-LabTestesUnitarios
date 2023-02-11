@@ -1,7 +1,7 @@
 class Phonebook:
-
     def __init__(self):
         self.entries = {'POLICIA': '190'}
+        self.tamanho_minimo_numero = 3
 
     def add(self, name, number):
         """
@@ -10,40 +10,44 @@ class Phonebook:
         :param number: number of person in string
         :return: 'Nome invalido' or 'Numero invalido' or 'Numero adicionado'
         """
-        if '#' in name:
-            return 'Nome invalido'
-        if '@' in name:
-            return 'Nme invalido'
-        if '!' in name:
-            return 'Nome invalido'
-        if '$' in name:
-            return 'Nome invalio'
-        if '%' in name:
-            return 'Nome invalido'
+        if self.verify_valid_name(name):
+            pass
+        else:
+            return "Nome invalido"
 
-        if len(number) < 0:
-            return 'Numero invalid'
+        if self.verify_valid_number(number):
+           pass
+        else:
+            return "Numero invalido"
 
         if name not in self.entries:
             self.entries[name] = number
 
         return 'Numero adicionado'
 
+    def verify_valid_name(self, name):#Refatoração
+        caracteres_invalidos = ['#', '@', '!', '$', '%']
+        for item in caracteres_invalidos:
+            if item in name:
+                return False
+        return True
+
+    def verify_valid_number(self, number):     #Refatoração
+        if len(number) > self.tamanho_minimo_numero:
+            return True
+        else:
+            return False
+
+
     def lookup(self, name):
         """
         :param name: name of person in string
         :return: return number of person with name
         """
-        if '#' in name:
-            return 'Nome invaldo'
-        if '@' in name:
-            return 'Nome invalido'
-        if '!' in name:
-            return 'Nme invalido'
-        if '$' in name:
-            return 'Nome invalido'
-        if '%' in name:
-            return 'Nome nvalido'
+        if self.verify_valid_name(name):
+            pass
+        else:
+            return "Nome invalido"
 
         return self.entries[name]
 

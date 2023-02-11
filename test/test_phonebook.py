@@ -195,28 +195,34 @@ class TestPhonebook:
         nome_valido = "Will"
         num_valido = "81999999999"
         phoneBook.add(nome_valido, num_valido)
-        tamanho_lista_esperado = 2
+        tamanho_lista_esperado = phoneBook.entries.__len__()
+        nomes_esperados = phoneBook.entries.keys()
 
         # Act
         result = phoneBook.get_names()
 
         #Assert
         assert result.__len__() == tamanho_lista_esperado
-        assert result.__contains__(nome_valido)
+        assert result == nomes_esperados
 
     def test_get_numbers(self):
         #Setup
         phoneBook = Phonebook()
         nome_valido = "Will"
-        num_valido = "81999999999"
+        num_valido = "12"
         phoneBook.add(nome_valido, num_valido)
-        tamanho_lista_esperado = 2
+        tamanho_lista_esperado = phoneBook.entries.__len__()
+        numeros_esperados = phoneBook.entries.values()
 
         # Act
         result = phoneBook.get_numbers()
 
         #Assert
         assert result.__len__() == tamanho_lista_esperado
+        print()
+        print(numeros_esperados)
+        print(result)
+        assert result == numeros_esperados
 
     def test_clear(self):
         # Setup
@@ -291,3 +297,53 @@ class TestPhonebook:
         #Assert
         assert resul_esperado == result
         assert phoneBook.entries.__len__() == tamanho_lista_esperado
+
+
+    #TDD Aqui :)
+    #
+    #
+    #
+    def test_change_number_nome_valido_numero_valido(self):  #Caso de sucesso
+        #Setup
+        phoneBook = Phonebook()
+        nome_valido = "Alice"
+        phoneBook.add(nome_valido, "81999999999")
+        novo_numero = "819999"
+        result_esperado = "Usuario alterado"
+
+        #Act
+        result = phoneBook.change_number(nome_valido, novo_numero)
+
+
+        #Asserts
+        assert result == result_esperado
+        assert phoneBook.entries.get(nome_valido) == novo_numero
+
+    def test_change_number_nome_invalido_numero_valido(self): #Caso para quando o nome não existir
+        #Setup
+        phoneBook = Phonebook()
+        nome_invalido = "Joao"
+        novo_numero = "999999999"
+        result_esperado = "Usuario nao alterado"
+
+        #Act
+        result = phoneBook.change_number(nome_invalido, novo_numero)
+
+        #Asserts
+        assert result == result_esperado
+
+    def test_change_number_nome_valido_numero_invalido(self): #Caso para quando o número for invalido
+        #Setup
+        phoneBook = Phonebook()
+        nome_valido = "Alice"
+        numero_valido = "81999999999"
+        phoneBook.add(nome_valido, numero_valido)
+
+        novo_numero = "0"
+        result_esperado = "Usuario nao alterado"
+
+        #Act
+        result = phoneBook.change_number(nome_valido, novo_numero)
+
+        #Asserts
+        assert result == result_esperado
