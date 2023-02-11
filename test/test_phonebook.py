@@ -5,7 +5,7 @@ class TestPhonebook:
         #Setup
         phoneBook = Phonebook()
         nome_valido = "Willams"
-        num_valido = "8198770767"
+        num_valido = "81987"
         resul_esperado = "Numero adicionado"
 
         #Act
@@ -196,14 +196,14 @@ class TestPhonebook:
         num_valido = "81999999999"
         phoneBook.add(nome_valido, num_valido)
         tamanho_lista_esperado = phoneBook.entries.__len__()
-        nomes_esperados = phoneBook.entries.keys()
+        nomes_esperados = list(phoneBook.entries.keys())
 
         # Act
         result = phoneBook.get_names()
 
         #Assert
         assert result.__len__() == tamanho_lista_esperado
-        assert result == nomes_esperados
+        assert list(result) == nomes_esperados
 
     def test_get_numbers(self):
         #Setup
@@ -212,33 +212,14 @@ class TestPhonebook:
         num_valido = "12"
         phoneBook.add(nome_valido, num_valido)
         tamanho_lista_esperado = phoneBook.entries.__len__()
-        numeros_esperados = phoneBook.entries.values()
+        numeros_esperados = list(phoneBook.entries.values())
 
         # Act
         result = phoneBook.get_numbers()
 
         #Assert
         assert result.__len__() == tamanho_lista_esperado
-        print()
-        print(numeros_esperados)
-        print(result)
-        assert result == numeros_esperados
-
-    def test_clear(self):
-        # Setup
-        phoneBook = Phonebook()
-        nome_valido = "Will"
-        num_valido = "81999999999"
-        phoneBook.add(nome_valido, num_valido)
-        tamanho_lista_esperado = 0
-        resul_esperado = "phonebook limpado"
-
-        # Act
-        result = phoneBook.clear()
-
-        # Assert
-        assert result == resul_esperado
-        assert phoneBook.entries.__len__() == tamanho_lista_esperado
+        assert list(result) == numeros_esperados
 
     def test_search_nome_valido(self):
         # Setup
@@ -251,7 +232,9 @@ class TestPhonebook:
         result = phoneBook.search(nome_valido)
 
         # Assert
-        assert result.__contains__(nome_valido)
+        print(phoneBook.entries)
+        assert result[0].__contains__(nome_valido)
+        assert result[0].__contains__(num_valido)
 
     def test_get_phonebook_sorted(self):
         # Setup
@@ -298,6 +281,21 @@ class TestPhonebook:
         assert resul_esperado == result
         assert phoneBook.entries.__len__() == tamanho_lista_esperado
 
+    def test_clear(self):
+        # Setup
+        phoneBook = Phonebook()
+        nome_valido = "Will"
+        num_valido = "81999999999"
+        phoneBook.add(nome_valido, num_valido)
+        tamanho_lista_esperado = 0
+        resul_esperado = "phonebook limpado"
+
+        # Act
+        result = phoneBook.clear()
+
+        # Assert
+        assert result == resul_esperado
+        assert phoneBook.entries.__len__() == tamanho_lista_esperado
 
     #TDD Aqui :)
     #
@@ -309,11 +307,10 @@ class TestPhonebook:
         nome_valido = "Alice"
         phoneBook.add(nome_valido, "81999999999")
         novo_numero = "819999"
-        result_esperado = "Usuario alterado"
+        result_esperado = "Numero atualizado"
 
         #Act
         result = phoneBook.change_number(nome_valido, novo_numero)
-
 
         #Asserts
         assert result == result_esperado
@@ -324,7 +321,7 @@ class TestPhonebook:
         phoneBook = Phonebook()
         nome_invalido = "Joao"
         novo_numero = "999999999"
-        result_esperado = "Usuario nao alterado"
+        result_esperado = "Nome invalido"
 
         #Act
         result = phoneBook.change_number(nome_invalido, novo_numero)
@@ -340,7 +337,7 @@ class TestPhonebook:
         phoneBook.add(nome_valido, numero_valido)
 
         novo_numero = "0"
-        result_esperado = "Usuario nao alterado"
+        result_esperado = "Nome ou numero invalido"
 
         #Act
         result = phoneBook.change_number(nome_valido, novo_numero)

@@ -2,8 +2,21 @@ class Phonebook:
     def __init__(self):
         self.entries = {'POLICIA': '190'}
         self.tamanho_minimo_numero = 3
+        self.caracteres_invalidos = ['#', '@', '!', '$', '%']
 
-    def add(self, name, number):
+    def verify_valid_name(self, name):  # Refatoração
+        for item in self.caracteres_invalidos:
+            if item in name or name == "":
+                return False
+        return True
+
+    def verify_valid_number(self, number):  # Refatoração
+        if len(number) >= self.tamanho_minimo_numero:
+            return True
+        else:
+            return False
+
+    def add(self, name, number): #Refatorado
         """
 
         :param name: name of person in string
@@ -16,30 +29,15 @@ class Phonebook:
             return "Nome invalido"
 
         if self.verify_valid_number(number):
-           pass
+            pass
         else:
             return "Numero invalido"
 
         if name not in self.entries:
             self.entries[name] = number
+            return 'Numero adicionado'
 
-        return 'Numero adicionado'
-
-    def verify_valid_name(self, name):#Refatoração
-        caracteres_invalidos = ['#', '@', '!', '$', '%']
-        for item in caracteres_invalidos:
-            if item in name:
-                return False
-        return True
-
-    def verify_valid_number(self, number):     #Refatoração
-        if len(number) > self.tamanho_minimo_numero:
-            return True
-        else:
-            return False
-
-
-    def lookup(self, name):
+    def lookup(self, name): #Refatorado
         """
         :param name: name of person in string
         :return: return number of person with name
@@ -50,6 +48,30 @@ class Phonebook:
             return "Nome invalido"
 
         return self.entries[name]
+
+    #Change Number
+    def change_number(self, name, new_number):
+        if self.verify_valid_name(name) and self.verify_valid_number(new_number):
+            if name in self.entries:
+                self.entries[name] = new_number
+                return "Numero atualizado"
+            else:
+                return "Nome invalido"
+        else:
+            return "Nome ou numero invalido"
+
+    #Bugado
+    def search(self, search_name):
+        """
+        Search all substring with search_name
+        :param search_name: string with name for search
+        :return: return list with results of search
+        """
+        result = []
+        for name, number in self.entries.items():
+            if search_name in name:
+                result.append({name, number})
+        return result
 
     def get_names(self):
         """
@@ -64,26 +86,6 @@ class Phonebook:
         :return: return all numbers in phonebook
         """
         return self.entries.values()
-
-    def clear(self):
-        """
-        Clear all phonebook
-        :return: return 'phonebook limpado'
-        """
-        self.entries = {}
-        return 'phonebook limpado'
-
-    def search(self, search_name):
-        """
-        Search all substring with search_name
-        :param search_name: string with name for search
-        :return: return list with results of search
-        """
-        result = []
-        for name, number in self.entries.items():
-            if search_name not in name:
-                result.append({name, number})
-        return result
 
     def get_phonebook_sorted(self):
         """
@@ -107,3 +109,12 @@ class Phonebook:
         """
         self.entries.pop(name)
         return 'Numero deletado'
+
+    def clear(self): #Refatorado
+        """
+        Clear all phonebook
+        :return: return 'phonebook limpado'
+        """
+        self.entries.clear()
+        return 'phonebook limpado'
+
