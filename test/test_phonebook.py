@@ -242,13 +242,13 @@ class TestPhonebook:
         nome_valido = "Alice"
         num_valido = "81999999999"
         phoneBook.add(nome_valido, num_valido)
-        lista_esperada = phoneBook.entries
+        lista_esperada = sorted(phoneBook.entries.items(), key=lambda item:item[1])
 
         # Act
         result = phoneBook.get_phonebook_sorted()
 
         # Assert
-        assert result == lista_esperada
+        assert lista_esperada == result
 
     def test_get_phonebook_reverse(self):
         # Setup
@@ -256,14 +256,14 @@ class TestPhonebook:
         nome_valido = "Alice"
         num_valido = "81999999999"
         phoneBook.add(nome_valido, num_valido)
-        lista_esperada = sorted(phoneBook.entries, key=phoneBook.entries.get, reverse=True)
+        lista_esperada = sorted(phoneBook.entries.items(), key=lambda item:item[1], reverse=True)
 
 
         # Act
         result = phoneBook.get_phonebook_reverse()
 
         # Assert
-        print(lista_esperada)
+        assert lista_esperada == result
 
     def test_delete(self):
         # Setup
@@ -341,6 +341,31 @@ class TestPhonebook:
 
         #Act
         result = phoneBook.change_number(nome_valido, novo_numero)
+
+        #Asserts
+        assert result == result_esperado
+
+    def test_get_name_by_number_valido(self):
+        #Setup
+        phoneBook = Phonebook()
+        nome_valido = "Alice"
+        numero_valido = "81999999999"
+        phoneBook.add(nome_valido, numero_valido)
+
+        #Act
+        result = phoneBook.get_name_by_number(numero_valido)
+
+        #Asserts
+        assert result == nome_valido
+
+    def test_get_name_by_number_invalido(self):
+        #Setup
+        phoneBook = Phonebook()
+        numero_invalido = "81999999999"
+        result_esperado = "Nome não encontrado"
+
+        #Act
+        result = phoneBook.get_name_by_number(numero_invalido)
 
         #Asserts
         assert result == result_esperado

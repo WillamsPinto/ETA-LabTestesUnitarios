@@ -4,13 +4,13 @@ class Phonebook:
         self.tamanho_minimo_numero = 3
         self.caracteres_invalidos = ['#', '@', '!', '$', '%']
 
-    def verify_valid_name(self, name):  # Refatoração
+    def verify_valid_name(self, name):  #Refatoração
         for item in self.caracteres_invalidos:
             if item in name or name == "":
                 return False
         return True
 
-    def verify_valid_number(self, number):  # Refatoração
+    def verify_valid_number(self, number):  #Refatoração
         if len(number) >= self.tamanho_minimo_numero:
             return True
         else:
@@ -50,7 +50,7 @@ class Phonebook:
         return self.entries[name]
 
     #Change Number
-    def change_number(self, name, new_number):
+    def change_number(self, name, new_number):#BDD
         if self.verify_valid_name(name) and self.verify_valid_number(new_number):
             if name in self.entries:
                 self.entries[name] = new_number
@@ -61,7 +61,7 @@ class Phonebook:
             return "Nome ou numero invalido"
 
     #Bugado
-    def search(self, search_name):
+    def search(self, search_name):#corrigido
         """
         Search all substring with search_name
         :param search_name: string with name for search
@@ -87,19 +87,25 @@ class Phonebook:
         """
         return self.entries.values()
 
-    def get_phonebook_sorted(self):
+    def get_phonebook_sorted(self):#corrigido
         """
 
         :return: return phonebook in sorted order
         """
-        return self.entries
+        return sorted(self.entries.items(), key=lambda item:item[1])
 
-    def get_phonebook_reverse(self):
+    def get_phonebook_reverse(self):#corrigido
         """
 
         :return: return phonebook in reverse sorted order
         """
-        return self.entries
+        return sorted(self.entries.items(), key=lambda item:item[1], reverse=True)
+
+    def get_name_by_number(self, number):#BDD
+        for key, value in self.entries.items():
+            if value == number:
+                return key
+        return "Nome não encontrado"
 
     def delete(self, name):
         """
